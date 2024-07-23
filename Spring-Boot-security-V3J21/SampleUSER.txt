@@ -1,0 +1,7 @@
+{
+"username":"ashu",
+"password":"dummy",
+"role":"ADMIN,USER"
+
+}
+
