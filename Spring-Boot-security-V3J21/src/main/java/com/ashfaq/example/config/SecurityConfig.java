@@ -12,9 +12,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EnableWebSecurity//we need to add to enable security
+@EnableWebSecurity // we need to add to enable security
 public class SecurityConfig {
 
 	@Autowired
@@ -60,14 +62,12 @@ public class SecurityConfig {
 		httpSecurity.authorizeHttpRequests((requests) -> {
 
 			requests.requestMatchers("/home").permitAll();
-		
+
 //		OR	requests.requestMatchers("/home","/register/user").permitAll(); in a single line we can provide all the api to be permitted to all users
 //			or a new requestmathcers can be added as below
 
 			requests.requestMatchers("/register/user").permitAll();
-			
-			
-			
+
 			requests.requestMatchers("/user/**").hasRole("USER");
 
 			requests.requestMatchers("/admin/**").hasRole("ADMIN");
@@ -87,6 +87,18 @@ public class SecurityConfig {
 		// clients where there is no need for a human-readable login form.
 
 		httpSecurity.logout(logout -> logout.permitAll()); // Enable logout functionality
+
+		
+		
+		// FOR H2 DB UI issue post login when spring security used
+
+		httpSecurity.headers(headers -> {
+
+			headers.frameOptions((frameOptions) -> {
+				frameOptions.disable();
+			});
+
+		});
 
 		return httpSecurity.build();
 	}
@@ -117,7 +129,7 @@ public class SecurityConfig {
 	public UserDetailsService userDetailsService() {
 		return userDetailService;
 	}
-	
+
 //	UserDetailsService > needs UserDetails > created by Builder class called User but data is coming from AppUser class, which is ours 
 //but if you see we are not configuring UserDetailsService with endcoder so we have to encode the password as well so 
 //	we have to create a bean AuthenticationProvider and need to provide the userDetailsService() and need to tell the bean to 
@@ -136,6 +148,30 @@ public class SecurityConfig {
 	@Bean
 	public PasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+// CORS Config 
+
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**") // Apply CORS settings to all paths
+						.allowedOrigins("http://my-frontend-domain.com") // Replace with frontend domain, provide domain
+																			// in list way "URL1 ,URL2" and avoid *
+						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // HTTP methods allowed
+						.allowedHeaders("*"); // Allow all headers
+				// .allowCredentials(true) // Allow credentials like cookies and authorization
+				// headers if we provide this we cant provide multiple origin
+//                          .maxAge(3600);  // Cache preflight response for 1 hour (3600 seconds)
+				// maxAge(3600): Sets the maximum age (in seconds) for which the results of a
+				// preflight request can be cached by the client. it's set to 1 hour (3600
+				// seconds).
+				// its for HTTP option
+			}
+		};
 	}
 
 }
