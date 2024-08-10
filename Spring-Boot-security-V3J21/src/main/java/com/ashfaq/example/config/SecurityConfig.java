@@ -27,7 +27,7 @@ public class SecurityConfig {
 
 		// 1 CSRF
 		httpSecurity.csrf(csrf -> csrf.disable()); // By default, Spring Security enables CSRF protection.
-
+//Note : http.csrf(Customizer.withDefaults()); this is not disable 
 		// when to disable csrf
 
 		// REST APIs: Stateless nature and token-based authentication make CSRF
