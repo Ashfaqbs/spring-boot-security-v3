@@ -15,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
 @Configuration
 @EnableWebSecurity // we need to add to enable security
 public class SecurityConfig {
@@ -175,3 +176,35 @@ public class SecurityConfig {
 	}
 
 }
+
+
+//common error logs 
+// 1 - Found 2 UserDetailsService beans, with names [customAppUserDetailService, userDetailsService]. Global Authentication Manager will not use a UserDetailsService for username/password login. Consider publishing a single UserDetailsService bean
+/**
+ 
+
+ 
+   @Autowired
+	private CustomAppUserDetailService customAppUserDetailService;
+	
+	
+	directly pass customAppUserDetailService in authenticationProvider 
+ 
+ public AuthenticationProvider authenticationProvider() {
+
+//			dataaccessobject DAO this is authentication provider for DB 
+			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+			provider.setUserDetailsService(customAppUserDetailService);
+			provider.setPasswordEncoder(bCryptPasswordEncoder());
+			return provider;
+		}
+ 
+  2 - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used for username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. 
+  
+  
+  so 1st remove the @bean on authenticationProvider() and securityFilterChain(HttpSecurity http){
+  		 http.authenticationProvider(authenticationProvider());
+auth should work as fine
+  }
+  
+*/
