@@ -1,7 +1,8 @@
 {
 "username":"ashu",
-"password":"dummy",
+"password":"ashu",
 "role":"ADMIN,USER"
 
 }
 
+//api can be called by basic auth and JWT token bearer token as well
