@@ -37,7 +37,59 @@
 - **How it works**: Once you log in through an SSO provider (e.g., Google), any other app linked to that provider will trust the existing session and log you in automatically.
 
 ### **Use Case**:
-- After logging into Gmail, you also gain access to Google Drive, Google Docs, etc., without re-entering your credentials.
+- After logging into Gmail, you also gain access to Google Drive, Google Docs, etc., without re-entering our credentials.
+
+  With Single Sign-On (SSO), when we log in to one application, we'll be automatically logged in to all other applications that share the same SSO domain.
+
+Scenario:
+
+Let's say we have 3 applications:
+
+1. App A 
+2. App B 
+3. App C 
+
+All 3 apps are configured with SSO using the same Identity Provider (IdP).
+
+Login Flow:
+
+1. You navigate to App A  and click login.
+2. You're redirected to the IdP's login page.
+3. You enter your credentials and authenticate with the IdP.
+4. IdP issues an SSO token (or session cookie).
+5. You're redirected back to App A, now logged in.
+
+Automatic Login to Other Apps:
+
+1. You navigate to App B .
+2. App B checks for the SSO token (or session cookie).
+3. Since the token is valid, App B logs you in automatically.
+4. Same happens for App C .
+
+Benefits:
+
+1. Seamless user experience across multiple apps.
+2. Reduced password fatigue.
+3. Improved security.
+
+SSO Types:
+
+1. Horizontal SSO: Multiple apps share the same SSO domain.
+2. Vertical SSO: Multiple apps within a single organization.
+
+Common SSO Implementations:
+
+1. OAuth 2.0
+2. OpenID Connect (OIDC)
+3. SAML (Security Assertion Markup Language)
+4. LDAP (Lightweight Directory Access Protocol)
+
+Real-world Examples:
+
+1. Google Apps (Gmail, Drive, Docs)
+2. Microsoft 365 (Office, Outlook, Teams)
+3. Amazon Web Services (AWS) SSO
+
 
 ---
 
